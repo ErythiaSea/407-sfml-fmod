@@ -1,0 +1,178 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="SFML Framework\Animation.cpp">
+      <Filter>Framework</Filter>
+    </ClCompile>
+    <ClCompile Include="SFML Framework\AudioManager.cpp">
+      <Filter>Framework</Filter>
+    </ClCompile>
+    <ClCompile Include="SFML Framework\BaseGame.cpp">
+      <Filter>Framework</Filter>
+    </ClCompile>
+    <ClCompile Include="SFML Framework\CircleCollider.cpp">
+      <Filter>Framework</Filter>
+    </ClCompile>
+    <ClCompile Include="SFML Framework\CircleEntity.cpp">
+      <Filter>Framework</Filter>
+    </ClCompile>
+    <ClCompile Include="SFML Framework\ColliderShape.cpp">
+      <Filter>Framework</Filter>
+    </ClCompile>
+    <ClCompile Include="SFML Framework\Collision.cpp">
+      <Filter>Framework</Filter>
+    </ClCompile>
+    <ClCompile Include="SFML Framework\CollisionEntity.cpp">
+      <Filter>Framework</Filter>
+    </ClCompile>
+    <ClCompile Include="SFML Framework\Entity.cpp">
+      <Filter>Framework</Filter>
+    </ClCompile>
+    <ClCompile Include="SFML Framework\ExampleMain.cpp">
+      <Filter>Framework</Filter>
+    </ClCompile>
+    <ClCompile Include="SFML Framework\Input.cpp">
+      <Filter>Framework</Filter>
+    </ClCompile>
+    <ClCompile Include="SFML Framework\Point.cpp">
+      <Filter>Framework</Filter>
+    </ClCompile>
+    <ClCompile Include="SFML Framework\SoundObject.cpp">
+      <Filter>Framework</Filter>
+    </ClCompile>
+    <ClCompile Include="Bullet.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Coin.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Connection.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Enemy.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Game.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Level.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Messages.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="NetworkManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="UI.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="SFML Framework\Animation.h">
+      <Filter>Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="SFML Framework\AudioManager.h">
+      <Filter>Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="SFML Framework\BaseGame.h">
+      <Filter>Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="SFML Framework\CircleCollider.h">
+      <Filter>Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="SFML Framework\CircleEntity.h">
+      <Filter>Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="SFML Framework\ColliderShape.h">
+      <Filter>Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="SFML Framework\Collision.h">
+      <Filter>Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="SFML Framework\CollisionEntity.h">
+      <Filter>Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="SFML Framework\Entity.h">
+      <Filter>Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="SFML Framework\Input.h">
+      <Filter>Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="SFML Framework\Point.h">
+      <Filter>Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="SFML Framework\SoundObject.h">
+      <Filter>Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Coin.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Connection.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Constants.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Enemy.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Game.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Level.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Messages.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="NetworkManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="UI.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="utils.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="SFML Framework\SFML Framework.vcxproj" />
+    <None Include="SFML Framework\SFML Framework.vcxproj.filters" />
+    <None Include="shaders\level_shader.glsl">
+      <Filter>Resource Files</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Framework">
+      <UniqueIdentifier>{22bb43b5-7e6a-4af4-960d-83770f40b523}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{2823453c-0c3f-4548-9f89-b7cc11b61fb5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{694b0760-1699-4f73-bee0-fc7b3543af09}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{668a5c1f-790b-4060-9de7-0f153baaa6e6}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>
