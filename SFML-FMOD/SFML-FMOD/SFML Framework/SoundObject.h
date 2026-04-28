@@ -4,6 +4,7 @@
 // NOTE FOR CMP407 MARKERS:
 // This exists for use with AudioManager, which is a generic interface with SFML's audio system.
 // It is NOT used in this project! All audio processing is done through FMOD.
+// See the FMODManager class.
 
 class SoundObject
 {

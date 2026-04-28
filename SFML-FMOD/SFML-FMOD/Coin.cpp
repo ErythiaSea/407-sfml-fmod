@@ -78,6 +78,7 @@ void Coin::collisionResponse(std::vector<sf::FloatRect> platforms, int count)
 			if (velocity.y > 0.0f) { // moving down
 				move({ 0.0f, -mostOverlap.size.y });
 				isGrounded = true;
+				FMODManager::Instance().playOneshotEvent("coindrop");
 			}
 			else { // moving up
 				move({ 0.0f, mostOverlap.size.y });
@@ -231,6 +232,7 @@ void CoinManager::handlePlayerCollision(Player& player, std::vector<GameEvent>& 
 			std::cout << player.getMoney() << "\n";
 			c.isActive = false;
 			eventsToSend.push_back({ CoinPickup, CoinPickupMessage(c.id) });
+			FMODManager::Instance().playOneshotEvent("coinpickup");
 		}
 	}
 }

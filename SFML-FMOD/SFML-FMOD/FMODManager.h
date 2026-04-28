@@ -18,8 +18,9 @@ class FMODManager {
 
 public:
 	FMOD_RESULT playEvent(std::string eventName);
+	FMOD_RESULT setEventParameter(std::string eventName, std::string paramName, float paramValue);
 	FMOD_RESULT stopEvent(std::string eventName, FMOD_STUDIO_STOP_MODE mode);
-	FMOD::Studio::EventInstance* playOneshotEvent(std::string eventName);
+	void playOneshotEvent(std::string eventName);
 
 	FMOD_RESULT loadBank(std::string bankPath, FMOD::Studio::Bank** bank);
 

@@ -3,6 +3,7 @@
 #include "SFML Framework/Animation.h"
 #include "Bullet.h"
 #include "Coin.h"
+#include "FMODManager.h"
 #include <random>
 #include <deque>
 #include <cmath>

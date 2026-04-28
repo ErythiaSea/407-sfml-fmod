@@ -3,6 +3,7 @@
 // NOTE FOR CMP407 MARKERS:
 // This exists to be a generic interface with SFML's audio system.
 // It is NOT used in this project! All audio processing is done through FMOD.
+// See the FMODManager class.
 
 MusicObject* AudioManager::addMusic(std::string filename, std::string key)
 {

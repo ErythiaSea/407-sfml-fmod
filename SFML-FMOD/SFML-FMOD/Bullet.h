@@ -1,6 +1,7 @@
 #pragma once
 #include "SFML Framework/Entity.h"
 #include "SFML Framework/Input.h"
+#include "FMODManager.h"
 #include <stdexcept>
 
 class Bullet : public Entity

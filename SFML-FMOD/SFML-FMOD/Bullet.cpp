@@ -45,6 +45,7 @@ void BulletManager::spawnBullet(sf::Vector2f pos, sf::Vector2f dir, float vel, u
 	b->local = isLocal;
 
 	b->isActive = true;
+	FMODManager::Instance().playOneshotEvent("gunshot");
 }
 
 void BulletManager::clearBullets()
@@ -71,6 +72,7 @@ void BulletManager::handleLevelCollision(std::vector<sf::FloatRect> platforms)
 		for (auto& p : platforms) {
 			if (p.contains(b.getPosition())) {
 				b.isActive = false;
+				FMODManager::Instance().playOneshotEvent("bulletbreak");
 				break;
 			}
 		}

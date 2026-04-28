@@ -91,6 +91,7 @@ void Enemy::die(std::vector<GameEvent>* events)
 
 	events->push_back({ CoinsSpawnRequest, csrm });
 	Utils::printMsg("requested coin spawn", debug);
+	FMODManager::Instance().playOneshotEvent("enemykill");
 
 	// todo: total coin value can still be over enemy worth (not much of an issue)
 	//for (int i = 0; i < numCoins; i++) {

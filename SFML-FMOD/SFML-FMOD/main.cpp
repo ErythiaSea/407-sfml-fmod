@@ -91,7 +91,7 @@ void fmodTest() {
     fSystem->init(32, FMOD_INIT_NORMAL, nullptr);
 
     FMOD::Sound* fSound = nullptr;
-    fSystem->createSound("sfx/nuke.wav", FMOD_DEFAULT, nullptr, &fSound);
+    fSystem->createSound("sfx/bell.wav", FMOD_DEFAULT, nullptr, &fSound);
 
     FMOD::Channel* fChannel = nullptr;
     res = fSystem->playSound(fSound, nullptr, false, &fChannel);
@@ -146,6 +146,8 @@ int main()
         game.handleInput(fixedTimestep, &in);
         game.fixedUpdate(fixedTimestep);
         game.handleCollisions(fixedTimestep);
+
+        FMODManager::Instance().updateSystem();
 
         // do network processing
         // networkMgr.handleDisconnections();

@@ -43,7 +43,7 @@ MovementInputsMessage Player::handleInput(float dt, Input* in)
 		}
 		inputsMsg.movementFlags |= JumpFlag;
 
-		FMODManager::Instance().playOneshotEvent("MainMusic");
+		FMODManager::Instance().playOneshotEvent("jump");
 	}
 
 	throttle = 0.0f;
@@ -303,7 +303,7 @@ void Player::takeDamage(float attackX, std::vector<GameEvent>* coinSpawnRequestL
 	if (timeSinceHit < IFRAME_TIME && !ignoreStun) return;
 	timeSinceHit = 0.0f;
 	health--;
-	// aud->playSound("hurt");
+	FMODManager::Instance().playOneshotEvent(health == 0 ? "playerdeath" : "playerhurt");
 	
 	// calculate direction and push player that way, and a little bit up
 	float dir = attackX > getPosition().x + getSize().x ? -1.0f : 1.0f;

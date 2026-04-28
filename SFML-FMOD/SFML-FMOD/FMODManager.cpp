@@ -4,7 +4,7 @@ FMODManager::FMODManager()
 {
 	// create and initialise studio system
 	FMOD::Studio::System::create(&fSystem);
-	fSystem->initialize(32, FMOD_STUDIO_INIT_NORMAL, FMOD_INIT_NORMAL, nullptr);
+	fSystem->initialize(512, FMOD_STUDIO_INIT_NORMAL, FMOD_INIT_NORMAL, nullptr);
 
 	// load bank files
 	FMOD_RESULT res;
@@ -36,10 +36,6 @@ FMODManager::FMODManager()
 		eventDescriptions[subPath] = desc;
 		eventInstances[subPath] = nullptr;
 		desc->createInstance(&eventInstances.at(subPath));
-
-		FMOD_3D_ATTRIBUTES attrib = {};
-		eventInstances.at(subPath)->set3DAttributes(&attrib);
-
 	}
 }
 
@@ -52,6 +48,25 @@ FMOD_RESULT FMODManager::playEvent(std::string eventName)
 	return eventInstances.at(eventName)->start();
 }
 
+FMOD_RESULT FMODManager::setEventParameter(std::string eventName, std::string paramName, float paramValue)
+{
+	if (eventInstances.count(eventName) == 0) {
+		Utils::printMsg(std::format("Event with name {} wasn't found!", eventName), error);
+		return FMOD_RESULT_FORCEINT;
+	}
+
+	FMOD_STUDIO_PARAMETER_DESCRIPTION paramDesc;
+	FMOD_RESULT res;
+	res = eventDescriptions.at(eventName)->getParameterDescriptionByIndex(0, &paramDesc); 
+	Utils::printMsg(std::format("res: {}", static_cast<int>(res)));
+	Utils::printMsg(std::format("desc: {}", paramDesc.name));
+	{
+		//Utils::printMsg(std::format("Parameter with name {} wasn't found!", paramName), error);
+		//return FMOD_RESULT_FORCEINT;
+	}
+	return eventInstances.at(eventName)->setParameterByName(paramName.c_str(), paramValue);
+}
+
 FMOD_RESULT FMODManager::stopEvent(std::string eventName, FMOD_STUDIO_STOP_MODE mode)
 {
 	if (eventInstances.count(eventName) == 0) {
@@ -61,28 +76,26 @@ FMOD_RESULT FMODManager::stopEvent(std::string eventName, FMOD_STUDIO_STOP_MODE 
 	return eventInstances.at(eventName)->stop(mode);
 }
 
-FMOD::Studio::EventInstance* FMODManager::playOneshotEvent(std::string eventName)
+void FMODManager::playOneshotEvent(std::string eventName)
 {
 	if (eventDescriptions.count(eventName) == 0) {
 		Utils::printMsg(std::format("Event with name {} wasn't found!", eventName), error);
-		return nullptr;
+		return;
 	}
 
-	Utils::printMsg("oneshotma? event");
 	// make a new instance, start it, and queue it for release once it finishes
 	FMOD::Studio::EventInstance* instance = nullptr;
 	eventDescriptions.at(eventName)->createInstance(&instance);
 
-	FMOD::Studio::EventDescription* desc = nullptr;
-	instance->getDescription(&desc);
-	char path[128];
-	int retrieved;
-	desc->getPath(path, 128, &retrieved);
-	Utils::printMsg(std::format("path: {}", path));
+	//FMOD::Studio::EventDescription* desc = nullptr;
+	//instance->getDescription(&desc);
+	//char path[128];
+	//int retrieved;
+	//desc->getPath(path, 128, &retrieved);
+	//Utils::printMsg(std::format("path: {}", path));
 
-	instance->start();
-	//instance->release();
-	return instance;
+	FMOD_RESULT res = instance->start();
+	instance->release();
 }
 
 FMOD_RESULT FMODManager::loadBank(std::string bankPath, FMOD::Studio::Bank** bank)

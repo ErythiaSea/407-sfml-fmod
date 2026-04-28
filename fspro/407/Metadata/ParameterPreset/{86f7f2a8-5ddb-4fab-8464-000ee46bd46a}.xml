@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.03.00">
+	<object class="ParameterPreset" id="{86f7f2a8-5ddb-4fab-8464-000ee46bd46a}">
+		<property name="name">
+			<value>DamageTimer</value>
+		</property>
+		<relationship name="folder">
+			<destination>{43a2e2cd-8cba-4dea-86b6-5744737c7920}</destination>
+		</relationship>
+		<relationship name="parameter">
+			<destination>{b0526219-1296-4960-869b-ed49b1c3f908}</destination>
+		</relationship>
+	</object>
+	<object class="GameParameter" id="{b0526219-1296-4960-869b-ed49b1c3f908}">
+		<property name="initialValue">
+			<value>0</value>
+		</property>
+	</object>
+</objects>

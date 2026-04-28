@@ -28,6 +28,7 @@ Game::Game(sf::RenderWindow* window)
 	std::sort(eventList.begin(), eventList.end(), [](GameEvent a, GameEvent b) { return a.type > b.type; });
 
 	Utils::printMsg("");
+	FMODManager::Instance().playEvent("LobbyMusic");
 }
 
 Game::~Game()
@@ -57,12 +58,16 @@ void Game::handleInput(float fixed_timestep, Input* in)
 		if (in->isKeyPressed(sf::Keyboard::Key::Enter)) {
 			Utils::printMsg("Starting match!", success);
 			nextRound();
+			FMODManager::Instance().stopEvent("LobbyMusic", FMOD_STUDIO_STOP_ALLOWFADEOUT);
+			FMODManager::Instance().playEvent("MainMusic");
 		}
 	}
 
 	// debug enemy spawn
 	if (in->isKeyPressed(sf::Keyboard::Key::G)) {
 		enemyManager.spawnEnemy(&eventsToSend);
+		FMODManager::Instance().setEventParameter("MainMusic", "Intensity", 1.0f);
+		FMODManager::Instance().setEventParameter("MainMusic", "DamageTimer", 1.0f);
 	}
 
 	// debug coin spawn
@@ -78,6 +83,8 @@ void Game::handleInput(float fixed_timestep, Input* in)
 			Utils::printMsg(std::format("[{}] Money: {}, Points: {}", plr->getId(), plr->getMoney(), plr->getPoints()), debug);
 		}
 		Utils::printMsg(std::format("state: {}, tospawn: {}", static_cast<int>(getRoundState()), enemiesToSpawn), debug);
+		FMODManager::Instance().setEventParameter("MainMusic", "Intensity", 0.0f);
+		FMODManager::Instance().setEventParameter("MainMusic", "DamageTimer", 1.0f);
 	}
 
 	// enable/disable debug printing
@@ -378,9 +385,18 @@ void Game::beginRound(MatchUpdateMessage msg)
 	enemiesToSpawn = roundEnemyCount;
 	localPlayer.setRateOfFire(BASE_FIRE_RATE / (1.0f + ((difficultyModifier - 1) / 2.0f)));
 
+	if (localPlayer.getHealth() < 3) {
+		localPlayer.setHealth(3);
+		FMODManager::Instance().playOneshotEvent("heal");
+	}
+
 	Utils::printMsg("Beginning round " + std::to_string(msg.round_num), success);
 
 	resetGame(roundNumber == 0);
+	if (roundNumber == 0) {
+		FMODManager::Instance().stopEvent("MainMusic", FMOD_STUDIO_STOP_ALLOWFADEOUT);
+		FMODManager::Instance().playEvent("LobbyMusic");
+	}
 }
 
 void Game::endRound()
