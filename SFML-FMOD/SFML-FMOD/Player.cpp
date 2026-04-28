@@ -38,11 +38,12 @@ MovementInputsMessage Player::handleInput(float dt, Input* in)
 
 	if ((in->isKeyPressed(sf::Keyboard::Key::Space)) && (coyoteTimer > 0.0f || airJumpsRemaining > 0)) {
 		velocity.y = -3.0f * SCALE;
-		//aud->playSound("jump");
 		if (coyoteTimer <= 0.0f) {
 			airJumpsRemaining = airJumpsRemaining - 1;
 		}
 		inputsMsg.movementFlags |= JumpFlag;
+
+		FMODManager::Instance().playOneshotEvent("MainMusic");
 	}
 
 	throttle = 0.0f;

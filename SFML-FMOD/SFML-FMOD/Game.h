@@ -7,6 +7,7 @@
 #include "Coin.h"
 #include "NetworkManager.h"
 #include "UI.h"
+#include "FMODManager.h"
 
 enum class RoundState {
 	PreRound = 0,

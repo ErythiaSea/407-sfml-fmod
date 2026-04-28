@@ -15,7 +15,7 @@
 #include "utils.h"
 #include "Game.h"
 #include "NetworkManager.h"
-#include "fmod.hpp"
+#include "FMODManager.h"
 
 void handleEvents(sf::RenderWindow* wn, Input* in)
 {
@@ -107,6 +107,7 @@ int main()
     Random::newRandomSeed();
 
     // fmodTest();
+    FMODManager::Instance();
 
     // Configure networking.
     //NetworkManager networkMgr;

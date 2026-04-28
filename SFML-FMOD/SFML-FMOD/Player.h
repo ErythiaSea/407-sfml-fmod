@@ -2,7 +2,7 @@
 #include "SFML Framework/CollisionEntity.h"
 #include "SFML Framework/Animation.h"
 #include "SFML Framework/Input.h"
-#include "SFML Framework/AudioManager.h"
+#include "FMODManager.h"
 #include "Bullet.h"
 #include "utils.h"
 #include "Messages.h"
@@ -93,7 +93,6 @@ protected:
 	std::vector<sf::FloatRect> collidingRects;
 	void addCollider(sf::FloatRect rect);
 
-	AudioManager* aud;
 	BulletManager* bulletManager;
 
 	uint8_t points = 0;

@@ -163,6 +163,7 @@ xcopy /Y /D "$(SolutionDir)..\FMOD-API\studio\lib\x64*.dll" "$(OutDir)"
     <ClCompile Include="Connection.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="EnemyManager.cpp" />
+    <ClCompile Include="FMODManager.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="Level.cpp" />
     <ClCompile Include="main.cpp" />
@@ -191,6 +192,7 @@ xcopy /Y /D "$(SolutionDir)..\FMOD-API\studio\lib\x64*.dll" "$(OutDir)"
     <ClInclude Include="Constants.h" />
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="EnemyManager.h" />
+    <ClInclude Include="FMODManager.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="Level.h" />
     <ClInclude Include="Messages.h" />
