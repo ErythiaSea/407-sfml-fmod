@@ -30,7 +30,7 @@ void EnemyManager::spawnEnemy(std::vector<GameEvent>* eventsToSend)
 	esmsg.seed = Random::randSeed;
 	eventsToSend->push_back({ EnemySpawn, esmsg });
 
-	FMODManager::Instance().playOneshotEvent("enemyspawn");
+	FMODManager::Instance().playOneshotSpatial("enemyspawn", pos);
 
 	Utils::printMsg("spawning ghost w params: coin num " + std::to_string(g->numCoins) + ", health " + std::to_string(g->health) + ", pos " 
 		+ std::to_string(g->getPosition().x) + "," + std::to_string(g->getPosition().y), debug);

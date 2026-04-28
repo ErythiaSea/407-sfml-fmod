@@ -98,6 +98,43 @@ void FMODManager::playOneshotEvent(std::string eventName)
 	instance->release();
 }
 
+void FMODManager::playOneshotSpatial(std::string eventName, sf::Vector2f pos)
+{
+	if (eventDescriptions.count(eventName) == 0) {
+		Utils::printMsg(std::format("Event with name {} wasn't found!", eventName), error);
+		return;
+	}
+
+	// make a new instance, start it, and queue it for release once it finishes
+	FMOD::Studio::EventInstance* instance = nullptr;
+	eventDescriptions.at(eventName)->createInstance(&instance);
+
+	//FMOD::Studio::EventDescription* desc = nullptr;
+	//instance->getDescription(&desc);
+	//char path[128];
+	//int retrieved;
+	//desc->getPath(path, 128, &retrieved);
+	//Utils::printMsg(std::format("path: {}", path));
+
+	FMOD_3D_ATTRIBUTES attrib;
+	attrib.forward = FMOD_VECTOR{ 0.0f, 0.0f, -1.0f };
+	attrib.up = FMOD_VECTOR{ 0.0f, -1.0f, 0.0f };
+	attrib.position = FMOD_VECTOR{ pos.x, pos.y, 0 };
+	instance->set3DAttributes(&attrib);
+
+	FMOD_RESULT res = instance->start();
+	instance->release();
+}
+
+void FMODManager::setListenerPosition(sf::Vector2f pos)
+{
+	FMOD_3D_ATTRIBUTES attrib;
+	attrib.forward = FMOD_VECTOR{ 0.0f, 0.0f, -1.0f };
+	attrib.up = FMOD_VECTOR{ 0.0f, -1.0f, 0.0f };
+	attrib.position = FMOD_VECTOR{ pos.x, pos.y, 0 };
+	fSystem->setListenerAttributes(0, &attrib);
+}
+
 FMOD_RESULT FMODManager::loadBank(std::string bankPath, FMOD::Studio::Bank** bank)
 {
 	return fSystem->loadBankFile(bankPath.c_str(), FMOD_STUDIO_LOAD_BANK_NORMAL, bank);

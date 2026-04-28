@@ -5,7 +5,7 @@
 			<value>coindrop</value>
 		</property>
 		<property name="outputFormat">
-			<value>1</value>
+			<value>2</value>
 		</property>
 		<relationship name="folder">
 			<destination>{0e52bc0d-6812-49a0-b6db-28a579a0c0ba}</destination>
@@ -119,6 +119,7 @@
 	<object class="MixerBusEffectChain" id="{675f6241-8ee9-4a3c-83a7-10e86a82a01e}">
 		<relationship name="effects">
 			<destination>{fae54fce-8895-4258-8687-2efcc9856c59}</destination>
+			<destination>{be00e6bb-d6ad-46ac-9538-9bb8583a9fe2}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{e6dff18a-d43b-45be-b286-cc1c1f3c7dd6}" />
@@ -145,5 +146,16 @@
 	</object>
 	<object class="MixerBusPanner" id="{e4e34d8f-398c-4f4b-82de-722834f32c11}" />
 	<object class="MixerBusFader" id="{fae54fce-8895-4258-8687-2efcc9856c59}" />
+	<object class="SpatialiserEffect" id="{be00e6bb-d6ad-46ac-9538-9bb8583a9fe2}">
+		<property name="minimumDistance">
+			<value>9.75</value>
+		</property>
+		<property name="maximumDistance">
+			<value>700</value>
+		</property>
+		<property name="overrideRange">
+			<value>true</value>
+		</property>
+	</object>
 	<object class="MixerBusFader" id="{96b02651-e8f1-4d52-8b8d-2e7b59c450a6}" />
 </objects>

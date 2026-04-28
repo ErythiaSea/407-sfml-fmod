@@ -72,7 +72,8 @@ void BulletManager::handleLevelCollision(std::vector<sf::FloatRect> platforms)
 		for (auto& p : platforms) {
 			if (p.contains(b.getPosition())) {
 				b.isActive = false;
-				FMODManager::Instance().playOneshotEvent("bulletbreak");
+				FMODManager::Instance().playOneshotSpatial("bulletbreak", b.getPosition());
+				FMODManager::Instance().playOneshotSpatial("wallhit", b.getPosition());
 				break;
 			}
 		}

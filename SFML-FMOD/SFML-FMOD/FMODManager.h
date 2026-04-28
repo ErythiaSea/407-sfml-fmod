@@ -21,6 +21,9 @@ public:
 	FMOD_RESULT setEventParameter(std::string eventName, std::string paramName, float paramValue);
 	FMOD_RESULT stopEvent(std::string eventName, FMOD_STUDIO_STOP_MODE mode);
 	void playOneshotEvent(std::string eventName);
+	void playOneshotSpatial(std::string eventName, sf::Vector2f pos);
+
+	void setListenerPosition(sf::Vector2f pos);
 
 	FMOD_RESULT loadBank(std::string bankPath, FMOD::Studio::Bank** bank);
 

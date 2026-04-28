@@ -161,6 +161,9 @@
 		</relationship>
 	</object>
 	<object class="EventMixerGroup" id="{680b6154-86de-4176-bdf3-b08961680ab9}">
+		<property name="volume">
+			<value>-4</value>
+		</property>
 		<property name="name">
 			<value>Audio 1</value>
 		</property>
@@ -399,7 +402,7 @@
 			<value>0.32000000000000001</value>
 		</property>
 		<property name="value">
-			<value>0</value>
+			<value>-4</value>
 		</property>
 	</object>
 	<object class="AutomationPoint" id="{3ae5a88e-eadf-4254-bcba-739c94d9176d}">
@@ -423,7 +426,7 @@
 			<value>0.66000000000000003</value>
 		</property>
 		<property name="value">
-			<value>0</value>
+			<value>-4</value>
 		</property>
 	</object>
 	<object class="AutomationPoint" id="{0bbd6938-07a2-41f0-8b66-c75fbcb76725}">
@@ -439,7 +442,7 @@
 			<value>1</value>
 		</property>
 		<property name="value">
-			<value>0</value>
+			<value>-4</value>
 		</property>
 	</object>
 	<object class="AutomationCurve" id="{88e80523-8e9d-4eea-bac3-6d591ebb0969}">

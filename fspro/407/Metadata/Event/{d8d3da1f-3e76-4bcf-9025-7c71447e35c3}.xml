@@ -5,7 +5,7 @@
 			<value>bulletbreak</value>
 		</property>
 		<property name="outputFormat">
-			<value>1</value>
+			<value>2</value>
 		</property>
 		<relationship name="folder">
 			<destination>{0e52bc0d-6812-49a0-b6db-28a579a0c0ba}</destination>
@@ -113,6 +113,7 @@
 	<object class="MixerBusEffectChain" id="{fbde9522-4b0f-459b-b24b-63f6a895701c}">
 		<relationship name="effects">
 			<destination>{6459e59e-1f56-4242-852d-91abbfbb4e4d}</destination>
+			<destination>{a15b1f68-ac6d-4b64-94f3-308ac68ccc0c}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{0b7a2029-ff60-44ab-a6f1-da49bbceefeb}" />
@@ -124,5 +125,16 @@
 	</object>
 	<object class="MixerBusPanner" id="{1a0d43cf-f4df-4aa5-9ee8-ac4a211c5f99}" />
 	<object class="MixerBusFader" id="{6459e59e-1f56-4242-852d-91abbfbb4e4d}" />
+	<object class="SpatialiserEffect" id="{a15b1f68-ac6d-4b64-94f3-308ac68ccc0c}">
+		<property name="minimumDistance">
+			<value>9.80000019</value>
+		</property>
+		<property name="maximumDistance">
+			<value>705</value>
+		</property>
+		<property name="overrideRange">
+			<value>true</value>
+		</property>
+	</object>
 	<object class="MixerBusFader" id="{898c4fc0-3199-42d7-9140-8d01fcc2e1cb}" />
 </objects>

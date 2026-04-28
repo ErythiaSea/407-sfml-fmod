@@ -28,7 +28,7 @@ Game::Game(sf::RenderWindow* window)
 	std::sort(eventList.begin(), eventList.end(), [](GameEvent a, GameEvent b) { return a.type > b.type; });
 
 	Utils::printMsg("");
-	FMODManager::Instance().playEvent("LobbyMusic");
+	//FMODManager::Instance().playEvent("LobbyMusic");
 }
 
 Game::~Game()
@@ -182,6 +182,9 @@ void Game::fixedUpdate(float fixed_timestep)
 	FMODManager::Instance().setEventParameter("MainMusic", "Intensity", intensity);
 	Utils::printMsg(std::format("intensity: {}", intensity), debug);
 
+	// move listener
+	FMODManager::Instance().setListenerPosition(localPlayer.getWorldCenter());
+
 	// update UI
 	playerCount = allPlayers.size();
 	UIData d;
@@ -192,10 +195,22 @@ void Game::fixedUpdate(float fixed_timestep)
 	d.localPlayerMoney = localPlayer.getMoney();
 	uiManager.update(d);
 
+	// get the second on the timer before calculating the new round time
+	int preRoundWholeSecond = -1;
+	if (getRoundState() == RoundState::PreRound) {
+		preRoundWholeSecond = ceil(ROUND_START_WAIT.asSeconds() - roundTimer);
+	}
+
+	// update round time
 	float realDt = gameTimeClock.restart().asSeconds();
 	gameTime += realDt;
 	if (roundNumber != 0) {
 		roundTimer += realDt;
+	}
+
+	// if the timer second has changed, play bell sound effect
+	if (ceil(ROUND_START_WAIT.asSeconds() - roundTimer) != preRoundWholeSecond && preRoundWholeSecond >= 2) {
+		FMODManager::Instance().playOneshotEvent("bell");
 	}
 	//onScreenTimer.setString("Time: " + std::to_string(gameTime));
 }
@@ -407,6 +422,7 @@ void Game::beginRound(MatchUpdateMessage msg)
 		FMODManager::Instance().stopEvent("MainMusic", FMOD_STUDIO_STOP_ALLOWFADEOUT);
 		FMODManager::Instance().playEvent("LobbyMusic");
 	}
+	FMODManager::Instance().playOneshotEvent("bell");
 }
 
 void Game::endRound()
@@ -444,7 +460,7 @@ void Game::resetGame(bool clearPoints)
 			plr->clearPoints();
 		}
 	}
-	coinManager.clearCoins(roundNumber == 0 ? 0 : 2);
+	coinManager.clearCoins(roundNumber == 0 ? 0 : 2.5f);
 	bulletManager.clearBullets();
 	enemyManager.clearEnemies();
 }

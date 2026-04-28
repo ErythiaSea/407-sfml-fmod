@@ -56,6 +56,7 @@ void Enemy::takeDamage(Bullet* bullet)
 
 	if (bullet->pierce == 0) {
 		bullet->isActive = false;
+		FMODManager::Instance().playOneshotSpatial("bulletbreak", bullet->getPosition());
 	}
 	// we only need to be immune to bullets that continue to exist after hitting, if we're alive
 	else if (isActive) {
@@ -91,7 +92,7 @@ void Enemy::die(std::vector<GameEvent>* events)
 
 	events->push_back({ CoinsSpawnRequest, csrm });
 	Utils::printMsg("requested coin spawn", debug);
-	FMODManager::Instance().playOneshotEvent("enemykill");
+	FMODManager::Instance().playOneshotSpatial("enemykill", getPosition());
 
 	// todo: total coin value can still be over enemy worth (not much of an issue)
 	//for (int i = 0; i < numCoins; i++) {
