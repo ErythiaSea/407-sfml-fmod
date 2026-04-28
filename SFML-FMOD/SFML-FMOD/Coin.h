@@ -53,7 +53,7 @@ public:
 	void despawnCoin(uint8_t id) { coins.at(id).isActive = false; }
 
 	// clear all active coins
-	void clearCoins();
+	void clearCoins(float time = 0);
 
 	// update all active coins
 	void update(float dt);
@@ -85,4 +85,7 @@ private:
 	// stores platforms that collide with each coin
 	std::vector<sf::FloatRect> collidingPlatforms;
 	void addCollider(sf::FloatRect rect, int num);
+
+	sf::Clock coinDespawnClock;
+	float coinDespawnTime = -1;
 };

@@ -14,7 +14,7 @@ public:
 	void spawnEnemy(EnemySpawnMessage esmsg);							// spawn enemy from received event
 
 	// update all active enemies
-	void update(float dt, bool host, std::vector<Player*>& players, std::vector<GameEvent>* localEvents, std::vector<GameEvent>* eventsToSend = nullptr);
+	void update(float dt, bool fast, std::vector<Player*>& players, std::vector<GameEvent>* localEvents, std::vector<GameEvent>* eventsToSend = nullptr);
 
 	void networkUpdate(GhostsUpdateMessage gumsg);						// interpolate ghost positions
 	void handleLevelCollision(std::vector<sf::FloatRect> platforms);	// collision between enemies and platforms (UNUSED)

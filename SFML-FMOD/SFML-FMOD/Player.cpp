@@ -300,6 +300,7 @@ void Player::takeDamage(float attackX, std::vector<GameEvent>* coinSpawnRequestL
 {
 	if (timeSinceHit < IFRAME_TIME && !ignoreStun) return;
 	timeSinceHit = 0.0f;
+	health--;
 	// aud->playSound("hurt");
 	
 	// calculate direction and push player that way, and a little bit up

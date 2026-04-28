@@ -10,6 +10,8 @@ struct UIData {
 	int8_t winningPlayerId = -1;
 	int localPlayerMoney = -1;
 	int localPlayerPoints = -1;
+	int health = -1;
+	int enemiesLeft = -1;
 };
 
 class UI
@@ -24,6 +26,7 @@ private:
 
 	sf::Text topMiddleText;			// where round time and "waiting"/"ready" goes
 	sf::Text localPlayerInfoText;	// displays money and wins
+	sf::Text scoreText;				// you can probably guess what this displays...
 
 	int playerCount = 1;
 

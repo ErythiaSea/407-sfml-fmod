@@ -38,6 +38,9 @@ public:
 	void clearPoints() { points = 0; }
 	uint8_t getPoints() const { return points; }
 
+	void setHealth(const int h) { health = h; }
+	int getHealth() const { return health; }
+
 	void setId(const uint8_t new_id) { id = new_id; }
 	uint8_t getId() const { return id; }
 
@@ -77,7 +80,7 @@ protected:
 	int airJumpsRemaining = 0;
 
 	int money = 0;
-	int lives = MAX_LIFE;
+	int health = MAX_LIFE;
 	float timeSinceHit = 1.0f;
 
 	float rateOfFire = 0.5f;

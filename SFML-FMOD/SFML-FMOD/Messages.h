@@ -143,6 +143,7 @@ struct CoinsSpawnRequestMessage {
 	uint8_t num_coins;
 	uint16_t total_worth;
 	sf::Vector2f position;
+	bool enemy = false;
 };
 
 static sf::Packet& operator<<(sf::Packet& packet, const CoinsSpawnRequestMessage& csrm)

@@ -45,18 +45,17 @@ void EnemyManager::spawnEnemy(EnemySpawnMessage esmsg)
 		+ std::to_string(g->getPosition().x) + "," + std::to_string(g->getPosition().y), debug);
 }
 
-void EnemyManager::update(float dt, bool host, std::vector<Player*>& players, std::vector<GameEvent>* localEvents, std::vector<GameEvent>* eventsToSend)
+void EnemyManager::update(float dt, bool fast, std::vector<Player*>& players, std::vector<GameEvent>* localEvents, std::vector<GameEvent>* eventsToSend)
 {
-	timeSinceSpawn += dt;
-	if (canSpawnEnemy() && host) {
-		spawnEnemy(eventsToSend);
+	timeSinceSpawn += (fast ? dt*5 : dt);
+	if (canSpawnEnemy()) {
+		spawnEnemy(localEvents);
 	}
 
 	for (auto& g : ghosts) {
 		if (!g.isActive) continue;
 		if (g.health <= 0.0f) {
-			if (host) g.die(localEvents);
-			else g.die(eventsToSend);
+			g.die(localEvents);
 		}
 		else { g.fixedUpdate(dt, players); }
 	}

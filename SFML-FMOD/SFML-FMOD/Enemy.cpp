@@ -87,6 +87,7 @@ void Enemy::die(std::vector<GameEvent>* events)
 	csrm.num_coins = numCoins;
 	csrm.position = getPosition();
 	csrm.total_worth = worth;
+	csrm.enemy = true;
 
 	events->push_back({ CoinsSpawnRequest, csrm });
 	Utils::printMsg("requested coin spawn", debug);

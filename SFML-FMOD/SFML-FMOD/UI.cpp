@@ -1,7 +1,7 @@
 #include "UI.h"
 
 UI::UI()
-	: topMiddleText(font), localPlayerInfoText(font), debugGameTimer(font)
+	: topMiddleText(font), localPlayerInfoText(font), debugGameTimer(font), scoreText(font)
 {
 	if (!font.openFromFile("font/pmscript.ttf")) {
 		Utils::printMsg("couldn't load font!", error);
@@ -17,6 +17,11 @@ UI::UI()
 	localPlayerInfoText.setOutlineThickness(1.0f);
 	localPlayerInfoText.setOutlineColor(sf::Color::Black);
 	localPlayerInfoText.setCharacterSize(22);
+
+	scoreText.setOutlineThickness(2.0f);
+	scoreText.setOutlineColor(sf::Color::Black);
+	scoreText.setCharacterSize(22);
+	scoreText.setString("I'm normal! Hahahah! Eggs!!");
 }
 
 void UI::update(UIData data)
@@ -25,14 +30,14 @@ void UI::update(UIData data)
 		std::string t;
 		t = std::format("Money: ${}", data.localPlayerMoney);
 		if (data.localPlayerPoints >= 0) {
-			t.append(std::format(" / Points: {}", data.localPlayerPoints));
+			t.append(std::format(" / Health: {}", data.health));
 		}
 		localPlayerInfoText.setString(t);
 	}
 	else localPlayerInfoText.setString("");
 
 	if (data.winningPlayerId != -1) {
-		std::string t = std::format("Player {} wins round {}!", data.winningPlayerId, data.roundNo);
+		std::string t = std::format("Wave {} clear!", data.roundNo);
 		topMiddleText.setString(t);
 		return;
 	}
@@ -40,14 +45,14 @@ void UI::update(UIData data)
 	// in game
 	if (data.roundNo != 0) {
 		std::string t;
-		if (data.roundTime > ROUND_LENGTH.asSeconds()) {
-			t = std::format("Round {} starting in {}...", data.roundNo, ceil(data.roundTime - ROUND_LENGTH.asSeconds()));
+		if (data.roundTime < ROUND_START_WAIT.asSeconds()) {
+			t = std::format("Wave {} starting in {}...", data.roundNo, ceil(ROUND_START_WAIT.asSeconds() - data.roundTime));
 		}
 		else if (data.roundTime < 0) {
 			t = "Finished!";
 		}
 		else {
-			t = std::to_string(data.roundTime);
+			t = std::format("Wave {} / {} enemies left!", data.roundNo, data.enemiesLeft);
 		}
 		topMiddleText.setString(t);
 		return;
@@ -55,7 +60,8 @@ void UI::update(UIData data)
 
 	// lobby
 	else {
-		topMiddleText.setString("Press enter to start...");
+		if (data.health == 0) { topMiddleText.setString("GAME OVER!"); }
+		else { topMiddleText.setString("Press enter to start..."); }
 	}
 }
 
@@ -69,4 +75,7 @@ void UI::render(sf::RenderWindow* win)
 
 	localPlayerInfoText.setPosition(view.getCenter() + sf::Vector2f(5.0f - (win->getSize().x / 2.0f), (5.0f - (win->getSize().y / 2.0f))));
 	win->draw(localPlayerInfoText);
+
+	scoreText.setPosition(view.getCenter() + sf::Vector2f(-5.0f + (win->getSize().x / 2.0f) - scoreText.getLocalBounds().size.x, (5.0f - (win->getSize().y / 2.0f))));
+	win->draw(scoreText);
 }

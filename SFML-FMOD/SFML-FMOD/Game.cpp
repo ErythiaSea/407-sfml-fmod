@@ -43,18 +43,13 @@ void Game::handleInput(float fixed_timestep, Input* in)
 	//	Utils::printMsg(std::to_string(testClock.reset().asMilliseconds()), debug);
 	//}
 
-	if (in->left_bumper_down && w) {
-		Utils::printMsg(std::to_string(testClock.restart().asMilliseconds()), debug);
-		w = false;
-	}
-	if (!in->left_bumper_down) {
-		w = true;
+	if (in->isKeyPressed(sf::Keyboard::Key::P)) {
 	}
 
-	if (getRoundState() == RoundState::MidRound) {
+	if (localPlayer.getHealth()) {
 		MovementInputsMessage inputs = localPlayer.handleInput(fixed_timestep, in);
 		inputs.time = getGameTime();
-		localPlayer.addInputsMessage(inputs);
+		//localPlayer.addInputsMessage(inputs);
 	}
 
 	// start match on enter key press
@@ -82,6 +77,7 @@ void Game::handleInput(float fixed_timestep, Input* in)
 			int money = plr->getMoney(); uint8_t points = plr->getPoints();
 			Utils::printMsg(std::format("[{}] Money: {}, Points: {}", plr->getId(), plr->getMoney(), plr->getPoints()), debug);
 		}
+		Utils::printMsg(std::format("state: {}, tospawn: {}", static_cast<int>(getRoundState()), enemiesToSpawn), debug);
 	}
 
 	// enable/disable debug printing
@@ -106,7 +102,7 @@ void Game::fixedUpdate(float fixed_timestep)
 		//plr->postCollisionUpdate(fixed_timestep);
 	}
 
-	if (getRoundState() == RoundState::PreRound) {
+	if (getRoundState() == RoundState::PreRound && roundNumber == 1) {
 		for (auto& plr : allPlayers) {
 			plr->setPosition(level.getSpawnPoint(plr->getId()));
 		}
@@ -115,40 +111,65 @@ void Game::fixedUpdate(float fixed_timestep)
 	// process local events
 	for (auto& ev : localEvents) {
 		if (ev.type & CoinsSpawnRequest) {
-			coinManager.processSpawnRequest(std::get<CoinsSpawnRequestMessage>(ev.var), eventsToSend);
+			CoinsSpawnRequestMessage csrm = std::get<CoinsSpawnRequestMessage>(ev.var);
+			coinManager.processSpawnRequest(csrm, eventsToSend);
+
+			// if the coin was dropped from an enemy, they must have died
+			if (csrm.enemy) enemiesSlain++;
+		}
+		if (ev.type & EnemySpawn) {
+			enemiesToSpawn--;
 		}
 	}
 	// erase events we processed here
-	std::erase_if(localEvents, [](GameEvent& ev) {return ev.type & CoinsSpawnRequest;});
+	// std::erase_if(localEvents, [](GameEvent& ev) {return ev.type & CoinsSpawnRequest;});
+	localEvents.clear();
 
-	enemyManager.toggleSpawn(roundNumber != 0 && getRoundState() == RoundState::MidRound);
-	enemyManager.update(fixed_timestep, NetworkManager::isHost(), allPlayers, &localEvents, &eventsToSend);
+	enemyManager.toggleSpawn(roundNumber != 0 && getRoundState() == RoundState::MidRound && enemiesToSpawn > 0);
+	enemyManager.update(fixed_timestep, true, allPlayers, &localEvents, &eventsToSend);
 
 	bulletManager.update(fixed_timestep);
 	coinManager.update(fixed_timestep);
 	level.update(fixed_timestep);
 
-	if (NetworkManager::isHost() && getRoundState() == RoundState::PostRound) {
-		if (roundTimer <= -HOST_DECIDE_WINNER_DELAY.asSeconds() && lastRoundWinner < 0) {
-			endRound();
-		}
-		if (roundTimer <= -HOST_NEW_ROUND_DELAY.asSeconds()) {
-			if (getPlayerWithId(lastRoundWinner)->getPoints() == POINTS_TO_WIN) {
-				endMatch();
-			}
-			else {
-				nextRound();
-			}
-		}
-	}
+	//if (NetworkManager::isHost() && getRoundState() == RoundState::PostRound) {
+	//	if (roundTimer <= -HOST_DECIDE_WINNER_DELAY.asSeconds() && lastRoundWinner < 0) {
+	//		endRound();
+	//	}
+	//	if (roundTimer <= -HOST_NEW_ROUND_DELAY.asSeconds()) {
+	//		if (getPlayerWithId(lastRoundWinner)->getPoints() == POINTS_TO_WIN) {
+	//			endMatch();
+	//		}
+	//		else {
+	//			nextRound();
+	//		}
+	//	}
+	//}
 
+	// all enemies slain
 	if (getRoundState() == RoundState::PostRound) {
 		resetGame();
+		nextRound();
+	}
+
+	// player died
+	if (localPlayer.getHealth() <= 0 && roundNumber != 0) {
+		endMatch();
+		resetGame(true);
+		playerDiedTime = gameTime;
+	}
+
+	// revive after 1.5s
+	if (gameTime - playerDiedTime > 1.5f && localPlayer.getHealth() == 0) {
+		localPlayer.setHealth(3);
+		playerDiedTime = -1.0f;
 	}
 
 	playerCount = allPlayers.size();
 	UIData d;
 	d.numPlayers = playerCount; d.roundNo = roundNumber; d.roundTime = roundTimer; d.winningPlayerId = lastRoundWinner;
+	d.health = localPlayer.getHealth();
+	d.enemiesLeft = roundEnemyCount - enemiesSlain;
 	if (roundNumber != 0) {
 		d.localPlayerMoney = localPlayer.getMoney();
 		d.localPlayerPoints = localPlayer.getPoints();
@@ -158,7 +179,7 @@ void Game::fixedUpdate(float fixed_timestep)
 	float realDt = gameTimeClock.restart().asSeconds();
 	gameTime += realDt;
 	if (roundNumber != 0) {
-		roundTimer -= realDt;
+		roundTimer += realDt;
 	}
 	//onScreenTimer.setString("Time: " + std::to_string(gameTime));
 }
@@ -345,7 +366,10 @@ void Game::beginRound(MatchUpdateMessage msg)
 	}
 	lastRoundWinner = -1;
 	roundNumber = msg.round_num;
-	roundTimer = ROUND_LENGTH.asSeconds() + ROUND_START_WAIT.asSeconds() + (msg.time - getGameTime());
+	//roundTimer = ROUND_LENGTH.asSeconds() + ROUND_START_WAIT.asSeconds() + (msg.time - getGameTime());
+	roundTimer = 0;
+	enemiesToSpawn = 5;
+	enemiesSlain = 0;
 	Utils::printMsg("Beginning round " + std::to_string(msg.round_num), success);
 
 	resetGame(roundNumber == 0);
@@ -386,7 +410,7 @@ void Game::resetGame(bool clearPoints)
 			plr->clearPoints();
 		}
 	}
-	coinManager.clearCoins();
+	coinManager.clearCoins(roundNumber == 0 ? 0 : 2);
 	bulletManager.clearBullets();
 	enemyManager.clearEnemies();
 }
@@ -397,10 +421,10 @@ RoundState Game::getRoundState() const
 	if (roundNumber == 0) return RoundState::MidRound;
 
 	// waiting for round to start
-	if (roundTimer > ROUND_LENGTH.asSeconds()) return RoundState::PreRound;
+	if (roundTimer < ROUND_START_WAIT.asSeconds()) return RoundState::PreRound;
 
 	// round finished, waiting for new one
-	if (roundTimer <= 0) return RoundState::PostRound;
+	if (enemiesSlain == roundEnemyCount) return RoundState::PostRound;
 
 	// default
 	return RoundState::MidRound;
@@ -439,7 +463,9 @@ void Game::renderGame()
 	// draw entities
 	bulletManager.render(game_window);
 	for (auto& plr : allPlayers) {
-		game_window->draw(*plr);
+		if (plr->getHealth()) {
+			game_window->draw(*plr);
+		}
 	}
 	level.renderPlatforms(game_window);
 	coinManager.render(game_window);

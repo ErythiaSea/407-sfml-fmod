@@ -108,6 +108,8 @@ CoinManager::CoinManager()
 
 	coins = std::vector<Coin>(MAX_NUM_COINS, Coin(&coinTexture));
 	for (int i = 0; i < MAX_NUM_COINS; i++) { coins[i].id = i; }
+
+	coinDespawnClock = sf::Clock();
 }
 
 //void CoinManager::spawnCoin(uint8_t id)
@@ -147,8 +149,14 @@ void CoinManager::spawnCoins(CoinsSpawnMessage csm)
 	}
 }
 
-void CoinManager::clearCoins()
+void CoinManager::clearCoins(float time)
 {
+	if (time != 0) {
+		coinDespawnClock.restart();
+		coinDespawnTime = time;
+		return;
+	}
+
 	for (auto& c : coins) {
 		c.isActive = false;
 	}
@@ -159,6 +167,11 @@ void CoinManager::update(float dt)
 	for (auto& c : coins) {
 		if (!c.isActive) continue;
 		c.fixedUpdate(dt);
+	}
+	if (coinDespawnClock.getElapsedTime().asSeconds() > coinDespawnTime) {
+		clearCoins();
+		coinDespawnClock.reset();
+		coinDespawnTime = 1;
 	}
 }
 

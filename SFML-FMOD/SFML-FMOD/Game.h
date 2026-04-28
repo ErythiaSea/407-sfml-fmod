@@ -56,17 +56,21 @@ private:
 	EnemyManager enemyManager;
 	CoinManager coinManager;
 
-	AudioManager* audioManager;
+	// AudioManager* audioManager;
 
 	UI uiManager;
 
 	sf::Clock gameTimeClock;
-	sf::Clock testClock;
-	bool w = false;
 	static inline float gameTime = 0.0f;
 	float roundTimer = 0.0f;
 
-	uint8_t roundNumber = 0; // 0 = lobby
+	static inline float playerDiedTime = -1.0f;
+
+	unsigned int roundNumber = 0; // 0 = lobby
+	int roundEnemyCount = 5; // changes at round start
+	int enemiesToSpawn = roundEnemyCount; // decreases when enemy spawns
+	int enemiesSlain = 0; // increases when enemy dies
+
 	int8_t lastRoundWinner = -1;
 
 	// events we will send over the network
@@ -74,7 +78,6 @@ private:
 	// events received from the network we need to process locally
 	std::vector<GameEvent> eventsRecieved;
 	// purely local events
-	// this is not fully cleared ever; it is the responsibility of functions to remove processed events
 	std::vector<GameEvent> localEvents;
 };
 
