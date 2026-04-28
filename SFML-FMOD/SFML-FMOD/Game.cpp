@@ -58,7 +58,7 @@ void Game::handleInput(float fixed_timestep, Input* in)
 	}
 
 	// start match on enter key press
-	if (NetworkManager::isHost() && playerCount > 1 && roundNumber == 0) {
+	if (roundNumber == 0) {
 		if (in->isKeyPressed(sf::Keyboard::Key::Enter)) {
 			Utils::printMsg("Starting match!", success);
 			nextRound();
@@ -95,11 +95,12 @@ void Game::handleInput(float fixed_timestep, Input* in)
 
 void Game::fixedUpdate(float fixed_timestep)
 {
-	if (getRoundState() == RoundState::MidRound) {
-		for (auto& plr : remotePlayers) {
-			plr.simulateInput(fixed_timestep);
-		}
-	}
+	//if (getRoundState() == RoundState::MidRound) {
+	//	for (auto& plr : remotePlayers) {
+	//		plr.simulateInput(fixed_timestep);
+	//	}
+	//}
+
 	for (auto& plr : allPlayers) {
 		plr->fixedUpdate(fixed_timestep);
 		//plr->postCollisionUpdate(fixed_timestep);

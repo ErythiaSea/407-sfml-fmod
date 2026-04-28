@@ -12,7 +12,7 @@ UI::UI()
 
 	topMiddleText.setOutlineThickness(2.0f);
 	topMiddleText.setOutlineColor(sf::Color::Black);
-	topMiddleText.setString("Waiting for players... (1/4)");
+	topMiddleText.setString("Press enter to start...");
 
 	localPlayerInfoText.setOutlineThickness(1.0f);
 	localPlayerInfoText.setOutlineColor(sf::Color::Black);
@@ -53,23 +53,9 @@ void UI::update(UIData data)
 		return;
 	}
 
-	// in lobby
-	// todo: setting text every frame (evil)
-	if (data.numPlayers != playerCount) {
-		playerCount = data.numPlayers;
-	}
-	if (playerCount == 1) {
-		topMiddleText.setString("Waiting for players... (1/4)");
-	}
+	// lobby
 	else {
-		if (NetworkManager::isHost()) {
-			std::string t = std::format("Press Enter to start! ({}/4)", playerCount);
-			topMiddleText.setString(t);
-		}
-		else {
-			std::string t = std::format("Waiting for host to start... ({}/4)", playerCount);
-			topMiddleText.setString(t);
-		}
+		topMiddleText.setString("Press enter to start...");
 	}
 }
 

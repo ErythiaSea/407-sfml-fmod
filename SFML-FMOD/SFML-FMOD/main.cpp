@@ -15,6 +15,7 @@
 #include "utils.h"
 #include "Game.h"
 #include "NetworkManager.h"
+#include "fmod.hpp"
 
 void handleEvents(sf::RenderWindow* wn, Input* in)
 {
@@ -81,19 +82,38 @@ void loadAudio(AudioManager* am) {
     s->setMaxConcurrent(2);
 }
 
+void fmodTest() {
+    // test - play a sound to see if fmod can do its thing
+    FMOD_RESULT res;
+    FMOD::System* fSystem = nullptr;
+
+    res = FMOD::System_Create(&fSystem);
+    fSystem->init(32, FMOD_INIT_NORMAL, nullptr);
+
+    FMOD::Sound* fSound = nullptr;
+    fSystem->createSound("sfx/nuke.wav", FMOD_DEFAULT, nullptr, &fSound);
+
+    FMOD::Channel* fChannel = nullptr;
+    res = fSystem->playSound(fSound, nullptr, false, &fChannel);
+    if (res == FMOD_OK) {
+        Utils::printMsg("yippee");
+    }
+}
+
 int main()
 {    
 	Utils::printMsg("Game startup...");
 
     Random::newRandomSeed();
 
+    // fmodTest();
+
     // Configure networking.
-    NetworkManager networkMgr;
-    networkMgr.setupNetworking();
+    //NetworkManager networkMgr;
+    //networkMgr.setupNetworking();
 
 	// Prepare window.
-    sf::String windowTitle = "CMP425 Assessment - PPP - ";
-    windowTitle += (networkMgr.isHost() ? "Host" : ("Player ?"));
+    sf::String windowTitle = "CMP407 Assessment - PPP";
 	sf::RenderWindow window(sf::VideoMode({ 1080, 720 }), windowTitle);
 	window.setFramerateLimit(300);	//Request 60 frames per second
     window.setKeyRepeatEnabled(false); // disable repeat key presses on hold
@@ -113,10 +133,6 @@ int main()
     in.setDefaultWindow(&window);
     Game game(&window);
 
-    if (!networkMgr.isHost()) {
-        game.addPlayer(true, networkMgr.getConnectionWithId(0));
-    }
-
     const float fixedTimestep = 1.f / 300.f;
 	while (window.isOpen()) {
 		// Calculate dt.
@@ -131,8 +147,8 @@ int main()
         game.handleCollisions(fixedTimestep);
 
         // do network processing
-        networkMgr.handleDisconnections();
-        game.networkUpdate(fixedTimestep, &networkMgr);
+        // networkMgr.handleDisconnections();
+        // game.networkUpdate(fixedTimestep, &networkMgr);
 
         // render entities
         game.renderGame();

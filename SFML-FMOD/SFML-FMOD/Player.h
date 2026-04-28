@@ -57,6 +57,7 @@ protected:
 	inline static constexpr float HURT_COIN_PICKUP_DISABLE_TIME = 1.0f;
 	inline static constexpr int MAX_AIR_JUMPS = 1;
 	inline static constexpr float COYOTE_TIME = 0.12f;
+	inline static constexpr int MAX_LIFE = 3;
 	inline static constexpr sf::Vector2f LEFT_BULLET_OFFSET = sf::Vector2f(10, 26);
 	inline static constexpr sf::Vector2f RIGHT_BULLET_OFFSET = sf::Vector2f(20, 26);
 
@@ -76,6 +77,7 @@ protected:
 	int airJumpsRemaining = 0;
 
 	int money = 0;
+	int lives = MAX_LIFE;
 	float timeSinceHit = 1.0f;
 
 	float rateOfFire = 0.5f;

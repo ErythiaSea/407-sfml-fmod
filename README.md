@@ -4,6 +4,8 @@
 
 ### A 2d platformer/PvE arena shooter. (Work in progress!)
 
+This project is based on my CMP425 network programming project. You can see what this project initially started with by checking out that repo; https://github.com/Abertay-University-SDI/assessment-project-ErythiaSea
+
 
 Controls
 ---
