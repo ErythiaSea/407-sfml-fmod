@@ -22,6 +22,8 @@ void EnemyManager::spawnEnemy(std::vector<GameEvent>* eventsToSend)
 	g->setPosition(pos);
 	g->reset();
 
+	g->health *= difficultyModifier;
+
 	if (eventsToSend == nullptr) return;
 	EnemySpawnMessage esmsg;
 	esmsg.enemy_id = g->id;
@@ -45,9 +47,9 @@ void EnemyManager::spawnEnemy(EnemySpawnMessage esmsg)
 		+ std::to_string(g->getPosition().x) + "," + std::to_string(g->getPosition().y), debug);
 }
 
-void EnemyManager::update(float dt, bool fast, std::vector<Player*>& players, std::vector<GameEvent>* localEvents, std::vector<GameEvent>* eventsToSend)
+void EnemyManager::update(float dt, bool fastSpawn, std::vector<Player*>& players, std::vector<GameEvent>* localEvents, std::vector<GameEvent>* eventsToSend)
 {
-	timeSinceSpawn += (fast ? dt*5 : dt);
+	timeSinceSpawn += (fastSpawn ? dt*5 : dt);
 	if (canSpawnEnemy()) {
 		spawnEnemy(localEvents);
 	}
@@ -57,7 +59,7 @@ void EnemyManager::update(float dt, bool fast, std::vector<Player*>& players, st
 		if (g.health <= 0.0f) {
 			g.die(localEvents);
 		}
-		else { g.fixedUpdate(dt, players); }
+		else { g.fixedUpdate(dt, players, difficultyModifier); }
 	}
 }
 

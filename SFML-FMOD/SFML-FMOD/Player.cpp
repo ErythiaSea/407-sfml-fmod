@@ -98,6 +98,7 @@ MovementInputsMessage Player::handleInput(float dt, Input* in)
 	//}
 }
 
+// network function
 void Player::simulateInput(float dt)
 {
 	// can't simulate no inputs!

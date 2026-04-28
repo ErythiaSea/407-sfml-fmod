@@ -366,10 +366,18 @@ void Game::beginRound(MatchUpdateMessage msg)
 	}
 	lastRoundWinner = -1;
 	roundNumber = msg.round_num;
+
 	//roundTimer = ROUND_LENGTH.asSeconds() + ROUND_START_WAIT.asSeconds() + (msg.time - getGameTime());
 	roundTimer = 0;
-	enemiesToSpawn = 5;
 	enemiesSlain = 0;
+
+	difficultyModifier = 1.0f + (0.2f * (roundNumber - 1));
+	enemyManager.setDifficultyModifier(difficultyModifier);
+
+	roundEnemyCount = 5.0f * difficultyModifier;
+	enemiesToSpawn = roundEnemyCount;
+	localPlayer.setRateOfFire(BASE_FIRE_RATE / (1.0f + ((difficultyModifier - 1) / 2.0f)));
+
 	Utils::printMsg("Beginning round " + std::to_string(msg.round_num), success);
 
 	resetGame(roundNumber == 0);

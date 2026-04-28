@@ -69,7 +69,7 @@ public:
 	GhostEnemy(sf::Texture* tex);
 	
 	// update the ghost enemy (move towards a player)
-	void fixedUpdate(float dt, std::vector<Player*>& players);
+	void fixedUpdate(float dt, std::vector<Player*>& players, float diffMod);
 
 	sf::Vector2f velocity;		// ghost's velocity
 	Animation moveAnim;			// ghost default animation

@@ -14,7 +14,7 @@ public:
 	void spawnEnemy(EnemySpawnMessage esmsg);							// spawn enemy from received event
 
 	// update all active enemies
-	void update(float dt, bool fast, std::vector<Player*>& players, std::vector<GameEvent>* localEvents, std::vector<GameEvent>* eventsToSend = nullptr);
+	void update(float dt, bool fastSpawn, std::vector<Player*>& players, std::vector<GameEvent>* localEvents, std::vector<GameEvent>* eventsToSend = nullptr);
 
 	void networkUpdate(GhostsUpdateMessage gumsg);						// interpolate ghost positions
 	void handleLevelCollision(std::vector<sf::FloatRect> platforms);	// collision between enemies and platforms (UNUSED)
@@ -27,6 +27,8 @@ public:
 	void clearEnemies();
 	std::vector<GhostEnemy*> getAliveEnemies();							// vector of all active enemies
 	GhostsUpdateMessage createUpdateMessage();							// create an update message of ghost positions
+
+	void setDifficultyModifier(float diffMod) { difficultyModifier = diffMod; }
 
 private:
 	inline static constexpr float spawnRate = 2.5f;
@@ -49,5 +51,7 @@ private:
 
 	// get the earliest enemy in the vector matching specified active state, or nullptr if none
 	GhostEnemy* getFirstEnemy(bool active = false);
+
+	float difficultyModifier = 1.0f;
 };
 

@@ -140,13 +140,19 @@ GhostEnemy::GhostEnemy(sf::Texture* tex)
 	moveAnim.setAnimationFps(4.0f);
 }
 
-void GhostEnemy::fixedUpdate(float dt, std::vector<Player*>& players)
+void GhostEnemy::fixedUpdate(float dt, std::vector<Player*>& players, float diffMod)
 {
 	Enemy::fixedUpdate(dt, players);
 
 	sf::Vector2f dir;
+
+	// diffmod needs to be different for movement or it ramps WAY too fast
+	// this formula ramps it half as fast
+	float movementMod = 1.0f + ((diffMod - 1) / 2.0f);
+	Utils::printMsg(std::to_string(movementMod));
 	
 	// interpolate if we should
+	// (this is a network function, so doesn't happen in audio project)
 	if (interpDestination.has_value() && interpCompletion < 1.0f) {
 		sf::Vector2f diff = (interpDestination.value() - getPosition());
 		if (diff.lengthSquared() != 0) {
@@ -177,11 +183,11 @@ void GhostEnemy::fixedUpdate(float dt, std::vector<Player*>& players)
 		else {
 			dir = sf::Vector2f(1.0f, 0.0f);
 		}
-		velocity += (dir * GHOST_ACCEL * dt);
+		velocity += (dir * GHOST_ACCEL * dt * movementMod);
 
 		// cap velocity
-		if (velocity.lengthSquared() > GHOST_MAX_SPEED_SQUARED) {
-			velocity = (velocity.normalized() * GHOST_MAX_SPEED);
+		if (velocity.lengthSquared() > GHOST_MAX_SPEED_SQUARED * (movementMod * movementMod)) {
+			velocity = (velocity.normalized() * GHOST_MAX_SPEED * movementMod);
 		}
 
 		move(velocity * dt);

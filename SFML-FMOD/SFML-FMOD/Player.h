@@ -52,6 +52,8 @@ public:
 	void addInputsMessage(MovementInputsMessage msg);
 	void clearInputsHistory() { movementInputsHistory.clear(); }
 
+	void setRateOfFire(float rate) { rateOfFire = rate; }
+
 protected:
 	inline static constexpr float ACCEL = 5.0f;
 	inline static constexpr float MAX_HORIZONTAL_SPEED = SCALE * 1.5f;
@@ -83,7 +85,7 @@ protected:
 	int health = MAX_LIFE;
 	float timeSinceHit = 1.0f;
 
-	float rateOfFire = 0.5f;
+	float rateOfFire = BASE_FIRE_RATE;
 	float timeSinceFired = 1.0f;
 
 	// platforms colliding with the player

@@ -71,6 +71,8 @@ private:
 	int enemiesToSpawn = roundEnemyCount; // decreases when enemy spawns
 	int enemiesSlain = 0; // increases when enemy dies
 
+	float difficultyModifier = 1;
+
 	int8_t lastRoundWinner = -1;
 
 	// events we will send over the network

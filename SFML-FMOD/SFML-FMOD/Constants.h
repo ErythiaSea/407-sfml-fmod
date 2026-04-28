@@ -18,6 +18,9 @@ inline static constexpr sf::Time ROUND_LENGTH = sf::seconds(16);
 inline static constexpr sf::Time ROUND_START_WAIT = sf::seconds(3);
 inline static constexpr int POINTS_TO_WIN = 2;
 
+///////////// player
+inline static constexpr float BASE_FIRE_RATE = 0.33f;
+
 // the maximum number of coins that can be spawned from any source at once
 inline static constexpr uint8_t MAX_COINS_SPAWN = 8;
 
