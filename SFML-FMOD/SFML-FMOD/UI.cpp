@@ -1,7 +1,7 @@
 #include "UI.h"
 
 UI::UI()
-	: topMiddleText(font), localPlayerInfoText(font), debugGameTimer(font), scoreText(font)
+	: topMiddleText(font), localPlayerInfoText(font), debugGameTimer(font), intensityText(font)
 {
 	if (!font.openFromFile("font/pmscript.ttf")) {
 		Utils::printMsg("couldn't load font!", error);
@@ -18,18 +18,18 @@ UI::UI()
 	localPlayerInfoText.setOutlineColor(sf::Color::Black);
 	localPlayerInfoText.setCharacterSize(22);
 
-	scoreText.setOutlineThickness(2.0f);
-	scoreText.setOutlineColor(sf::Color::Black);
-	scoreText.setCharacterSize(22);
-	scoreText.setString("I'm normal! Hahahah! Eggs!!");
+	intensityText.setOutlineThickness(2.0f);
+	intensityText.setOutlineColor(sf::Color::Black);
+	intensityText.setCharacterSize(22);
+	intensityText.setString("Intensity: 0");
 }
 
 void UI::update(UIData data)
 {
-	if (data.localPlayerMoney >= 0) {
+	if (data.localPlayerMoney >= 0 || data.roundNo > 0) {
 		std::string t;
 		t = std::format("Money: ${}", data.localPlayerMoney);
-		if (data.localPlayerPoints >= 0) {
+		if (data.health >= 0) {
 			t.append(std::format(" / Health: {}", data.health));
 		}
 		localPlayerInfoText.setString(t);
@@ -55,6 +55,8 @@ void UI::update(UIData data)
 			t = std::format("Wave {} / {} enemies left!", data.roundNo, data.enemiesLeft);
 		}
 		topMiddleText.setString(t);
+
+		intensityText.setString(std::format("Intensity: {}", data.intensity));
 		return;
 	}
 
@@ -62,6 +64,7 @@ void UI::update(UIData data)
 	else {
 		if (data.health == 0) { topMiddleText.setString("GAME OVER!"); }
 		else { topMiddleText.setString("Press enter to start..."); }
+		intensityText.setString("");
 	}
 }
 
@@ -76,6 +79,6 @@ void UI::render(sf::RenderWindow* win)
 	localPlayerInfoText.setPosition(view.getCenter() + sf::Vector2f(5.0f - (win->getSize().x / 2.0f), (5.0f - (win->getSize().y / 2.0f))));
 	win->draw(localPlayerInfoText);
 
-	scoreText.setPosition(view.getCenter() + sf::Vector2f(-5.0f + (win->getSize().x / 2.0f) - scoreText.getLocalBounds().size.x, (5.0f - (win->getSize().y / 2.0f))));
-	win->draw(scoreText);
+	intensityText.setPosition(view.getCenter() + sf::Vector2f(-5.0f + (win->getSize().x / 2.0f) - intensityText.getLocalBounds().size.x, (5.0f - (win->getSize().y / 2.0f))));
+	win->draw(intensityText);
 }

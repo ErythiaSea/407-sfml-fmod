@@ -54,6 +54,8 @@ public:
 
 	void setRateOfFire(float rate) { rateOfFire = rate; }
 
+	float getTimeSinceHit() { return timeSinceHit; }
+
 protected:
 	inline static constexpr float ACCEL = 5.0f;
 	inline static constexpr float MAX_HORIZONTAL_SPEED = SCALE * 1.5f;

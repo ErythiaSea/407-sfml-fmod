@@ -44,9 +44,6 @@ void Game::handleInput(float fixed_timestep, Input* in)
 	//	Utils::printMsg(std::to_string(testClock.reset().asMilliseconds()), debug);
 	//}
 
-	if (in->isKeyPressed(sf::Keyboard::Key::P)) {
-	}
-
 	if (localPlayer.getHealth()) {
 		MovementInputsMessage inputs = localPlayer.handleInput(fixed_timestep, in);
 		inputs.time = getGameTime();
@@ -172,15 +169,27 @@ void Game::fixedUpdate(float fixed_timestep)
 		playerDiedTime = -1.0f;
 	}
 
+	// apply a low pass filter to the music if the player was hit recently
+	FMODManager::Instance().setEventParameter("MainMusic", "DamageTimer", std::min(localPlayer.getTimeSinceHit() * 0.8f, 1.0f));
+
+	// calculate intensity and use it to apply layers to the music
+	// scales with number of alive enemies, the current round number, and remaining player health
+	float intensity = 0.0f;
+	intensity += (0.075f * (roundNumber - 1));
+	intensity += (0.05 * enemyManager.getAliveEnemies().size());
+	intensity += (0.2 * (3 - localPlayer.getHealth()));
+	intensity = std::min(intensity, 1.0f);
+	FMODManager::Instance().setEventParameter("MainMusic", "Intensity", intensity);
+	Utils::printMsg(std::format("intensity: {}", intensity), debug);
+
+	// update UI
 	playerCount = allPlayers.size();
 	UIData d;
 	d.numPlayers = playerCount; d.roundNo = roundNumber; d.roundTime = roundTimer; d.winningPlayerId = lastRoundWinner;
 	d.health = localPlayer.getHealth();
 	d.enemiesLeft = roundEnemyCount - enemiesSlain;
-	if (roundNumber != 0) {
-		d.localPlayerMoney = localPlayer.getMoney();
-		d.localPlayerPoints = localPlayer.getPoints();
-	}
+	d.intensity = intensity;
+	d.localPlayerMoney = localPlayer.getMoney();
 	uiManager.update(d);
 
 	float realDt = gameTimeClock.restart().asSeconds();
@@ -368,11 +377,12 @@ void Game::nextRound()
 
 void Game::beginRound(MatchUpdateMessage msg)
 {
-	for (auto& player : allPlayers) {
-		player->setMoney(0);
-	}
 	lastRoundWinner = -1;
 	roundNumber = msg.round_num;
+
+	if (roundNumber == 1) {
+		localPlayer.setMoney(0);
+	}
 
 	//roundTimer = ROUND_LENGTH.asSeconds() + ROUND_START_WAIT.asSeconds() + (msg.time - getGameTime());
 	roundTimer = 0;
@@ -385,7 +395,7 @@ void Game::beginRound(MatchUpdateMessage msg)
 	enemiesToSpawn = roundEnemyCount;
 	localPlayer.setRateOfFire(BASE_FIRE_RATE / (1.0f + ((difficultyModifier - 1) / 2.0f)));
 
-	if (localPlayer.getHealth() < 3) {
+	if (localPlayer.getHealth() < 3 && roundNumber != 0) {
 		localPlayer.setHealth(3);
 		FMODManager::Instance().playOneshotEvent("heal");
 	}

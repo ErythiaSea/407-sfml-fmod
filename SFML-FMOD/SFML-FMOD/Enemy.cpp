@@ -150,7 +150,6 @@ void GhostEnemy::fixedUpdate(float dt, std::vector<Player*>& players, float diff
 	// diffmod needs to be different for movement or it ramps WAY too fast
 	// this formula ramps it half as fast
 	float movementMod = 1.0f + ((diffMod - 1) / 2.0f);
-	Utils::printMsg(std::to_string(movementMod));
 	
 	// interpolate if we should
 	// (this is a network function, so doesn't happen in audio project)

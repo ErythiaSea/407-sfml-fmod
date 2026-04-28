@@ -29,7 +29,6 @@ public:
 	// singleton stuff
 	FMODManager(const FMODManager&) = delete;
 	FMODManager(FMODManager&&) = delete;
-
 	FMODManager& operator=(const FMODManager&) = delete;
 	FMODManager& operator=(FMODManager&&) = delete;
 
