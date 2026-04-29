@@ -6,15 +6,15 @@ Level::Level()
 	if (!skyTexture.loadFromFile("gfx/nszsky.png")) {
 		Utils::printMsg("Couldn't load sky texture!", error);
 	}
-	if (!rockTexture.loadFromFile("gfx/nszrock.png")) {
-		Utils::printMsg("Couldn't load rock texture!", error);
-	}
-	if (!seaTexture0.loadFromFile("gfx/nszsea0.png")) {
-		Utils::printMsg("Couldn't load sea 0 texture!", error);
-	}
-	if (!seaTexture1.loadFromFile("gfx/nszsea1.png")) {
-		Utils::printMsg("Couldn't load sea 1 texture!", error);
-	}
+	//if (!rockTexture.loadFromFile("gfx/nszrock.png")) {
+	//	Utils::printMsg("Couldn't load rock texture!", error);
+	//}
+	//if (!seaTexture0.loadFromFile("gfx/nszsea0.png")) {
+	//	Utils::printMsg("Couldn't load sea 0 texture!", error);
+	//}
+	//if (!seaTexture1.loadFromFile("gfx/nszsea1.png")) {
+	//	Utils::printMsg("Couldn't load sea 1 texture!", error);
+	//}
 	if (!levelTexture.loadFromFile("gfx/levelTiles.png")) {
 		Utils::printMsg("Couldn't load tiles!", error);
 	}
@@ -66,9 +66,9 @@ Level::Level()
 	////////////// initialise background //////////////////
 
 	skyShape.setTexture(&skyTexture);
-	rockShape.setTexture(&rockTexture);
-	seaShape0.setTexture(&seaTexture0);
-	seaShape1.setTexture(&seaTexture1);
+	//rockShape.setTexture(&rockTexture);
+	//seaShape0.setTexture(&seaTexture0);
+	//seaShape1.setTexture(&seaTexture1);
 
 	skyShape.setSize({ 1536, 3072 });
 	skyShape.setOrigin({ 768, 1536 });
@@ -112,14 +112,14 @@ void Level::renderBackground(sf::RenderWindow* win)
 	sf::Vector2f c = v.getCenter();
 
 	skyShape.setPosition(c - sf::Vector2f(c.x / 20.0f, c.y / 50.0f));
-	rockShape.setPosition(c - sf::Vector2f(c.x / 12.0f, c.y / 50.0f));
-	seaShape0.setPosition(c - sf::Vector2f(c.x / 10.0f, c.y / 50.0f));
-	seaShape1.setPosition(c - sf::Vector2f(c.x / 8.0f, c.y / 50.0f));
+	//rockShape.setPosition(c - sf::Vector2f(c.x / 12.0f, c.y / 50.0f));
+	//seaShape0.setPosition(c - sf::Vector2f(c.x / 10.0f, c.y / 50.0f));
+	//seaShape1.setPosition(c - sf::Vector2f(c.x / 8.0f, c.y / 50.0f));
 
 	win->draw(skyShape);
-	win->draw(rockShape);
-	win->draw(seaShape0);
-	win->draw(seaShape1);
+	//win->draw(rockShape);
+	//win->draw(seaShape0);
+	//win->draw(seaShape1);
 }
 
 sf::Vector2f Level::getSpawnPoint(uint8_t id)

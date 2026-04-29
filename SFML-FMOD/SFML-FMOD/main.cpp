@@ -106,7 +106,7 @@ int main()
 
     Random::newRandomSeed();
 
-    // fmodTest();
+    // Initialise audio system and load banks.
     FMODManager::Instance();
 
     // Configure networking.
@@ -147,6 +147,7 @@ int main()
         game.fixedUpdate(fixedTimestep);
         game.handleCollisions(fixedTimestep);
 
+        // update fmod system, so that newly queued events happen
         FMODManager::Instance().updateSystem();
 
         // do network processing

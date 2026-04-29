@@ -58,11 +58,10 @@ FMOD_RESULT FMODManager::setEventParameter(std::string eventName, std::string pa
 	FMOD_STUDIO_PARAMETER_DESCRIPTION paramDesc;
 	FMOD_RESULT res;
 	res = eventDescriptions.at(eventName)->getParameterDescriptionByIndex(0, &paramDesc); 
-	Utils::printMsg(std::format("res: {}", static_cast<int>(res)));
-	Utils::printMsg(std::format("desc: {}", paramDesc.name));
+	if (res != FMOD_OK)
 	{
-		//Utils::printMsg(std::format("Parameter with name {} wasn't found!", paramName), error);
-		//return FMOD_RESULT_FORCEINT;
+		Utils::printMsg(std::format("Parameter with name {} wasn't found!", paramName), error);
+		return res;
 	}
 	return eventInstances.at(eventName)->setParameterByName(paramName.c_str(), paramValue);
 }
@@ -86,14 +85,6 @@ void FMODManager::playOneshotEvent(std::string eventName)
 	// make a new instance, start it, and queue it for release once it finishes
 	FMOD::Studio::EventInstance* instance = nullptr;
 	eventDescriptions.at(eventName)->createInstance(&instance);
-
-	//FMOD::Studio::EventDescription* desc = nullptr;
-	//instance->getDescription(&desc);
-	//char path[128];
-	//int retrieved;
-	//desc->getPath(path, 128, &retrieved);
-	//Utils::printMsg(std::format("path: {}", path));
-
 	FMOD_RESULT res = instance->start();
 	instance->release();
 }

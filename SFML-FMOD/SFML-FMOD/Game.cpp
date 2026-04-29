@@ -230,7 +230,7 @@ void Game::handleCollisions(float fixed_timestep)
 	//enemyManager.handleLevelCollision(level.collisionRects); // doesn't do anything rn
 	enemyManager.handleBulletCollision(bulletManager.getAliveBullets(), &eventsToSend);
 
-	std::vector<GameEvent>* coinSpawnRequestVector = (NetworkManager::isHost() ? &localEvents : &eventsToSend);
+	std::vector<GameEvent>* coinSpawnRequestVector = &localEvents;
 	enemyManager.handlePlayerCollision(localPlayer, coinSpawnRequestVector);
 
 	coinManager.handleLevelCollision(level.collisionRects);
